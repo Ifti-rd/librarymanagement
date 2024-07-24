@@ -1,0 +1,100 @@
+import os
+import platform
+
+ #Initial book list for demonstration
+book_list = [
+    {"title": "To Kill a Mockingbird", "author": "Harper Lee", "year": 1960},
+    {"title": "1984", "author": "George Orwell", "year": 1949},
+    {"title": "The Great Gatsby", "author": "F. Scott Fitzgerald", "year": 1925}
+]
+
+def display_menu():
+    print("""
+    ------------------------------------------------------
+   |======================================================| 
+   |====== Welcome to Great Hartland Community Library =====|
+   |======================================================|
+    ------------------------------------------------------
+
+    Enter 1 : To View All Books
+    Enter 2 : To Add New Book
+    Enter 3 : To Search for a Book
+    Enter 4 : To Remove a Book
+    Enter 5 : To Exit
+    """)
+
+def view_books():
+    if book_list:
+        print("\nList of Books:\n")
+        for book in book_list:
+            print(f"Title: {book['title']}, Author: {book['author']}, Year: {book['year']}")
+    else:
+        print("\nNo books available in the library.")
+
+def add_book():
+    title = input("Enter Book Title: ")
+    author = input("Enter Book Author: ")
+    year = input("Enter Year of Publication: ")
+    
+    new_book = {"title": title, "author": author, "year": int(year)}
+    book_list.append(new_book)
+    print(f"\n=> New book '{title}' by {author} added successfully.")
+
+def search_book():
+    search_title = input("Enter Book Title to Search: ")
+    found_books = [book for book in book_list if search_title.lower() in book['title'].lower()]
+    
+    if found_books:
+        print("\nBook(s) Found:\n")
+        for book in found_books:
+            print(f"Title: {book['title']}, Author: {book['author']}, Year: {book['year']}")
+    else:
+        print(f"\nNo books found with the title '{search_title}'.")
+
+def remove_book():
+    remove_title = input("Enter Book Title to Remove: ")
+    global book_list
+    book_list = [book for book in book_list if remove_title.lower() not in book['title'].lower()]
+    print(f"\n=> Book(s) with the title '{remove_title}' removed successfully.")
+
+def manage_library():
+    while True:
+        display_menu()
+        
+        try:
+            user_input = int(input("Please select an option: "))
+        except ValueError:
+            print("\nInvalid input! Please enter a number.")
+            continue
+        
+        if user_input == 1:
+            view_books()
+        elif user_input == 2:
+            add_book()
+        elif user_input == 3:
+            search_book()
+        elif user_input == 4:
+            remove_book()
+        elif user_input == 5:
+            print("Exiting the program. Goodbye!")
+            break
+        else:
+            print("Please enter a valid option.")
+        
+        run_again()
+
+def run_again():
+    run_agn = input("\nDo you want to continue? (y/n): ")
+    if run_agn.lower() == 'y':
+        if platform.system() == "Windows":
+            os.system('cls')
+        else:
+            os.system('clear')
+    elif run_agn.lower() == 'n':
+        print("Goodbye!")
+        exit()
+    else:
+        print("Invalid input! Please enter 'y' or 'n'.")
+
+if __name__ == "__main__":
+    manage_library()
